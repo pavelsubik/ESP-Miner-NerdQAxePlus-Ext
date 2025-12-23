@@ -7,6 +7,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/home',
     home: true,
   },
+
   {
     title: 'Swarm',
     icon: 'share-outline',
@@ -30,6 +31,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
   { title: 'Security',
     icon: 'shield-outline',
     link: '/pages/security',
+  },
+  {
+    title: 'Autotune',
+    icon: 'trending-up-outline',
+    link: '/pages/autotune',
   },
   {
     title: 'System',

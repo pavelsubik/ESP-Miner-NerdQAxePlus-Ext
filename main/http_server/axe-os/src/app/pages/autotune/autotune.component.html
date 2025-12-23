@@ -1,0 +1,126 @@
+<div class="autotune-container">
+  <!-- Header Section - 10% height -->
+  <div class="autotune-header">
+    <nb-card class="h-100">
+      <nb-card-header>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="text-hint">{{ 'AUTOTUNE.HEADER' | translate }}</span>
+          <nb-badge 
+            [text]="autotuneState.isRunning ? ('AUTOTUNE.STATUS_RUNNING' | translate) : ('AUTOTUNE.STATUS_IDLE' | translate)" 
+            [status]="autotuneState.isRunning ? 'success' : 'basic'"
+            size="small">
+          </nb-badge>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row align-items-center">
+          <!-- Config & Controls -->
+          <div class="col-12 col-lg-4 mb-3 mb-lg-0">
+            <div class="params-row">
+              <div class="param-input">
+                <label>{{ 'AUTOTUNE.MAX_FREQ' | translate }}</label>
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxFrequency" placeholder="800">
+              </div>
+              <div class="param-input">
+                <label>{{ 'AUTOTUNE.MAX_VOLT' | translate }}</label>
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxVoltage" placeholder="1400">
+              </div>
+            </div>
+            <div class="params-row mt-2">
+               <div class="param-input">
+                <label>{{ 'AUTOTUNE.MAX_POWER' | translate }}</label>
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxPower" placeholder="500">
+              </div>
+              <div class="param-input">
+                <label>{{ 'AUTOTUNE.MAX_TEMP' | translate }}</label>
+                 <input nbInput type="number" [(ngModel)]="autotuneState.maxVrTemp" placeholder="100">
+              </div>
+            </div>
+            
+            <div class="d-flex gap-2 mt-3">
+               <button nbButton status="success" size="medium" [disabled]="autotuneState.isRunning" (click)="startAutotune()">
+                 <nb-icon icon="play-circle-outline"></nb-icon> {{ 'AUTOTUNE.START' | translate }}
+               </button>
+               <button nbButton status="danger" size="medium" [disabled]="!autotuneState.isRunning" (click)="stopAutotune()">
+                 <nb-icon icon="stop-circle-outline"></nb-icon> {{ 'AUTOTUNE.STOP' | translate }}
+               </button>
+               <button nbButton status="warning" size="medium" outline [disabled]="autotuneState.isRunning" (click)="resetAutotune()">
+                 <nb-icon icon="refresh-outline"></nb-icon>
+               </button>
+            </div>
+          </div>
+
+          <!-- Current Status -->
+          <div class="col-12 col-lg-3 mb-3 mb-lg-0 border-lg-right">
+             <div class="text-center">
+                <div class="param-label">{{ 'AUTOTUNE.CURRENT_STEP' | translate }}</div>
+                <div class="h5 mb-0">{{ autotuneState.currentStep }} / {{ autotuneState.totalSteps > 0 ? autotuneState.totalSteps : '?' }}</div>
+                <div class="small text-hint">
+                   {{ autotuneState.currentFrequency }} MHz / {{ autotuneState.currentVoltage }} mV
+                </div>
+             </div>
+          </div>
+          
+          <div class="col-12 col-lg-5">
+            <div class="row text-center">
+              <!-- Best Hashrate -->
+              <div class="col-6 border-right">
+                <div class="param-label text-success font-weight-bold">{{ 'AUTOTUNE.BEST_HASHRATE' | translate }}</div>
+                <div class="h5 text-success mb-0">
+                  {{ autotuneState.bestHashrate > 0 ? (autotuneState.bestHashrate | number:'1.0-0') : '--' }} <small>GH/s</small>
+                </div>
+                <div class="small text-hint">
+                   &#64; {{ autotuneState.bestFrequency }} MHz / {{ autotuneState.bestVoltage }} mV
+                </div>
+              </div>
+              
+              <!-- Best Efficiency -->
+              <div class="col-6">
+                <div class="param-label text-info font-weight-bold">{{ 'AUTOTUNE.BEST_EFFICIENCY' | translate }}</div>
+                <div class="h5 text-info mb-0">
+                  {{ autotuneState.bestEfficiency > 0 ? (autotuneState.bestEfficiency | number:'1.2-2') : '--' }} <small>J/TH</small>
+                </div>
+                 <div class="small text-hint">
+                   &#64; {{ autotuneState.bestEffFrequency }} MHz / {{ autotuneState.bestEffVoltage }} mV
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  
+  <!-- Chart Section - Fixed height in the middle -->
+  <div class="autotune-chart">
+    <nb-card>
+      <nb-card-header>
+        <span class="text-hint">{{ 'AUTOTUNE.CHART_TITLE' | translate }}</span>
+      </nb-card-header>
+      <nb-card-body class="chart-container">
+        <canvas #autotuneChart></canvas>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  
+  <!-- Log Section - Takes remaining space at the bottom -->
+  <div class="autotune-log">
+    <nb-card class="h-100">
+      <nb-card-header>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="text-hint">{{ 'AUTOTUNE.LOG_TITLE' | translate }}</span>
+          <span class="text-hint small">{{ logLines.length }} {{ 'AUTOTUNE.LINES' | translate }}</span>
+        </div>
+      </nb-card-header>
+      <nb-card-body class="log-container">
+        <div class="log-content" #logContainer>
+          <div *ngFor="let line of logLines" 
+               class="log-line"
+               [ngClass]="getLogClass(line)">
+            {{ line }}
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

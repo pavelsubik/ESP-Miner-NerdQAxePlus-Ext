@@ -505,5 +505,24 @@
     "THIS_DEVICE_FORGOTTEN": "Dieser Browser wurde vergessen.",
     "NO_TRUSTED_DEVICE_HELP": "Keine vertrauenswürdige Sitzung in diesem Browser. Geschützte Aktionen erfordern einen 6-stelligen Code, bis du „Diesen Browser merken“ auswählst.",
     "NOT_TRUSTED": "Nicht vertrauenswürdig"
+  },
+  "AUTOTUNE": {
+    "TITLE": "Autotune",
+    "HEADER": "Autotune-Parameter",
+    "STATUS_RUNNING": "LÄUFT",
+    "STATUS_IDLE": "LEERLAUF",
+    "MAX_FREQ": "Max Freq (MHz)",
+    "MAX_VOLT": "Max Volt (mV)",
+    "MAX_POWER": "Max Leistung (W)",
+    "MAX_TEMP": "Max Temp (˚C)",
+    "START": "Start",
+    "STOP": "Stopp",
+    "RESET": "Zurücksetzen",
+    "CURRENT_STEP": "Aktueller Schritt",
+    "BEST_HASHRATE": "Beste Hashrate",
+    "BEST_EFFICIENCY": "Beste Effizienz",
+    "CHART_TITLE": "Leistungsdiagramm",
+    "LOG_TITLE": "Autotune-Protokoll",
+    "LINES": "Zeilen"
   }
 }

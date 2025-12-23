@@ -305,5 +305,18 @@ export class SystemService {
   public getOTPStatus(): Observable<{ enabled: boolean }> {
     return this.httpClient.get('/api/otp/status') as Observable<{ enabled: boolean }>;
   }
+
+  // Autotune
+  public startAutotune(config: any, uri: string = '') {
+    return this.httpClient.post(`${uri}/api/autotune/start`, config);
+  }
+
+  public stopAutotune(uri: string = '') {
+    return this.httpClient.post(`${uri}/api/autotune/stop`, {});
+  }
+  
+  public getAutotuneStatus(uri: string = '') {
+    return this.httpClient.get(`${uri}/api/autotune/status`);
+  }
 }
 

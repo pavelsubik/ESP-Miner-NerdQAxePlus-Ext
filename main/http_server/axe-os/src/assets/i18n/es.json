@@ -505,5 +505,24 @@
     "THIS_DEVICE_FORGOTTEN": "Este navegador ha sido olvidado.",
     "NO_TRUSTED_DEVICE_HELP": "No hay una sesión de confianza en este navegador. Las acciones protegidas solicitarán un código de 6 dígitos hasta que elijas « Recordar este navegador ».",
     "NOT_TRUSTED": "No de confianza"
+  },
+  "AUTOTUNE": {
+    "TITLE": "Autotune",
+    "HEADER": "Parámetros de Autotune",
+    "STATUS_RUNNING": "EJECUTANDO",
+    "STATUS_IDLE": "INACTIVO",
+    "MAX_FREQ": "Frec Max (MHz)",
+    "MAX_VOLT": "Volt Max (mV)",
+    "MAX_POWER": "Potencia Max (W)",
+    "MAX_TEMP": "Temp Max (˚C)",
+    "START": "Iniciar",
+    "STOP": "Detener",
+    "RESET": "Restablecer",
+    "CURRENT_STEP": "Paso Actual",
+    "BEST_HASHRATE": "Mejor Hashrate",
+    "BEST_EFFICIENCY": "Mejor Eficiencia",
+    "CHART_TITLE": "Gráfico de Rendimiento",
+    "LOG_TITLE": "Registro de Autotune",
+    "LINES": "líneas"
   }
 }

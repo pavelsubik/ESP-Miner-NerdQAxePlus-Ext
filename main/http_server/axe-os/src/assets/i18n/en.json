@@ -505,5 +505,24 @@
     "THIS_DEVICE_FORGOTTEN": "This browser has been forgotten.",
     "NO_TRUSTED_DEVICE_HELP": "No trusted session in this browser. Protected actions will ask for a 6-digit code until you choose “Remember this browser”.",
     "NOT_TRUSTED": "Not trusted"
+  },
+  "AUTOTUNE": {
+    "TITLE": "Autotune",
+    "HEADER": "Autotune Parameters",
+    "STATUS_RUNNING": "RUNNING",
+    "STATUS_IDLE": "IDLE",
+    "MAX_FREQ": "Max Freq (MHz)",
+    "MAX_VOLT": "Max Volt (mV)",
+    "MAX_POWER": "Max Power (W)",
+    "MAX_TEMP": "Max Temp (°C)",
+    "START": "Start",
+    "STOP": "Stop",
+    "RESET": "Reset",
+    "CURRENT_STEP": "Current Step",
+    "BEST_HASHRATE": "Best Hashrate",
+    "BEST_EFFICIENCY": "Best Efficiency",
+    "CHART_TITLE": "Performance Chart",
+    "LOG_TITLE": "Autotune Log",
+    "LINES": "lines"
   }
 }

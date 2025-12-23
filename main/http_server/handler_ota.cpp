@@ -3,6 +3,7 @@
 #include "esp_log.h"
 
 #include "global_state.h"
+#include "autotune_task.hpp"
 
 #include "http_cors.h"
 #include "http_utils.h"
@@ -110,6 +111,9 @@ esp_err_t POST_OTA_update(httpd_req_t *req)
 
     esp_ota_handle_t ota_handle;
     int remaining = req->content_len;
+
+    // Stop autotune if running before OTA
+    AutotuneTask::getInstance().stop();
 
     // lock the power management module
     LockGuard lg(POWER_MANAGEMENT_MODULE);

@@ -10,6 +10,7 @@ import { SystemComponent } from './system/system.component';
 import { SwarmComponent } from './swarm/swarm.component';
 import { AlertComponent } from './alert/alert.component';
 import { SecurityComponent } from './security/security.component';
+import { AutotuneComponent } from './autotune/autotune.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +24,10 @@ const routes: Routes = [{
     {
       path: 'home',
       component: HomeComponent
+    },
+    {
+      path: 'autotune',
+      component: AutotuneComponent
     },
     {
       path: 'settings',

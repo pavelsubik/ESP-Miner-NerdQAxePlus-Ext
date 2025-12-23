@@ -36,6 +36,7 @@ import { NbMenuItem } from '@nebular/theme';
                 link: '/pages/home',
                 home: true,
             },
+
             {
                 title: this.translateService.instant('NAVIGATION.SWARM'),
                 icon: 'share-outline',
@@ -60,6 +61,11 @@ import { NbMenuItem } from '@nebular/theme';
                 title: this.translateService.instant('NAVIGATION.SECURITY'),
                 icon: 'shield-outline',
                 link: '/pages/security',
+            },
+            {
+                title: this.translateService.instant('AUTOTUNE.TITLE'),
+                icon: 'trending-up-outline',
+                link: '/pages/autotune',
             },
             {
                 title: this.translateService.instant('NAVIGATION.SYSTEM'),

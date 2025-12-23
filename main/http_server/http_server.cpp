@@ -20,6 +20,7 @@
 #include "handler_file.h"
 #include "handler_alert.h"
 #include "handler_otp.h"
+#include "handler_autotune.h"
 #include "macros.h"
 
 #pragma GCC diagnostic error "-Wall"
@@ -138,11 +139,11 @@ esp_err_t start_rest_server(void * pvParameters)
 
     httpd_config_t config = HTTPD_DEFAULT_CONFIG();
     config.uri_match_fn = httpd_uri_match_wildcard;
-    config.max_uri_handlers = 30;
+    config.max_uri_handlers = 40;
     config.lru_purge_enable = true;
-    config.max_open_sockets = 10;
+    config.max_open_sockets = 12;
     config.stack_size = 12288;
-    config.keep_alive_enable = false;
+    config.keep_alive_enable = true;
     config.recv_wait_timeout = 5;
     config.send_wait_timeout = 5;
     config.close_fn = http_close_cb;
@@ -275,6 +276,19 @@ esp_err_t start_rest_server(void * pvParameters)
         .user_ctx = NULL
     };
     httpd_register_uri_handler(http_server, &update_ota_github_options_uri);
+
+    /* Autotune API Handlers */
+    httpd_uri_t autotune_start = {
+        .uri = "/api/autotune/start", .method = HTTP_POST, .handler = POST_autotune_start, .user_ctx = rest_context};
+    httpd_register_uri_handler(http_server, &autotune_start);
+
+    httpd_uri_t autotune_stop = {
+        .uri = "/api/autotune/stop", .method = HTTP_POST, .handler = POST_autotune_stop, .user_ctx = rest_context};
+    httpd_register_uri_handler(http_server, &autotune_stop);
+
+    httpd_uri_t autotune_status = {
+        .uri = "/api/autotune/status", .method = HTTP_GET, .handler = GET_autotune_status, .user_ctx = rest_context};
+    httpd_register_uri_handler(http_server, &autotune_status);
 
     if (enter_recovery) {
         /* Make default route serve Recovery */

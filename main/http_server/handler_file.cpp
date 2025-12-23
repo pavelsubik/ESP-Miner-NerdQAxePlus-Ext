@@ -196,6 +196,11 @@ esp_err_t rest_common_get_handler(httpd_req_t *req)
                 ESP_LOGE(TAG, "Failed to open file: %s, errno: %d", filepath, errno);
                 httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "Not found");
                 return ESP_OK;
+            } else if (strncmp(uri_clean, "/api/", 5) == 0) {
+                // API endpoint missing (handler not registered) -> 404
+                ESP_LOGE(TAG, "API endpoint not found: %s", uri_clean);
+                httpd_resp_send_err(req, HTTPD_404_NOT_FOUND, "API endpoint not found");
+                return ESP_OK;
             } else {
                 // portal redirection
                 ESP_LOGE(TAG, "page not found: %s", uri_clean);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <pthread.h>
+#include <unistd.h>
 #include "esp_http_server.h"
 
 template<typename T> class MemoryGuard {
