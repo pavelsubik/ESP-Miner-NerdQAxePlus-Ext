@@ -83,12 +83,14 @@ esp_err_t GET_autotune_status(httpd_req_t *req)
     cJSON_AddNumberToObject(root, "bestHashrate", bestHR.hashrate_ghs); // matches frontend
     cJSON_AddNumberToObject(root, "bestFrequency", bestHR.frequency);
     cJSON_AddNumberToObject(root, "bestVoltage", bestHR.voltage);
+    cJSON_AddNumberToObject(root, "bestHashrateEff", bestHR.efficiency_j_th);
     
     // Best Efficiency
     AutotuneResult bestEff = task.getBestEfficiency();
     cJSON_AddNumberToObject(root, "bestEfficiency", bestEff.efficiency_j_th); // matches frontend
     cJSON_AddNumberToObject(root, "bestEffFrequency", bestEff.frequency);
     cJSON_AddNumberToObject(root, "bestEffVoltage", bestEff.voltage);
+    cJSON_AddNumberToObject(root, "bestEfficiencyHR", bestEff.hashrate_ghs);
     
     // Logs (as array of strings)
     cJSON *logs = cJSON_CreateArray();

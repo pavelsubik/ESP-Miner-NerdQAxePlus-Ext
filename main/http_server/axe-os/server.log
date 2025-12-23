@@ -1,0 +1,222 @@
+
+> axe-os@0.0.0 start-local
+> ng serve --host 0.0.0.0 --port 4200 --configuration=production --proxy-config proxy.conf.json
+
+Option "browserTarget" is deprecated: Use 'buildTarget' instead.
+
+Warning: This is a simple server for use in testing or debugging Angular applications
+locally. It hasn't been reviewed for security issues.
+
+Binding this server to an open connection can result in compromising your application or
+computer. Using a different host than the one passed to the "--host" flag might result in
+websocket connection issues. You might need to use "--disable-host-check" if that's the
+case.
+    
+Warning: 'outputHashing' option is disabled when using the dev-server.
+****************************************************************************************
+This is a simple server for use in testing or debugging Angular applications locally.
+It hasn't been reviewed for security issues.
+
+DON'T USE IT FOR PRODUCTION!
+****************************************************************************************
+- Generating browser application bundles (phase: setup)...
+✔ Browser application bundle generation complete.
+
+Initial chunk files   | Names              |  Raw size | Estimated transfer size
+styles.css, styles.js | styles             |   1.95 MB |               110.47 kB
+main.js               | main               |   1.87 MB |               403.87 kB
+polyfills.js          | polyfills          | 163.65 kB |                42.24 kB
+runtime.js            | runtime            |   2.86 kB |                 1.34 kB
+
+                      | Initial total      |   3.99 MB |               557.91 kB
+
+Lazy chunk files      | Names              |  Raw size | Estimated transfer size
+502.js                | pages-pages-module | 208.92 kB |                40.59 kB
+236.js                | auth-auth-module   |  16.62 kB |                 3.35 kB
+
+Build at: 2025-12-23T17:36:13.414Z - Hash: 2bea6d651061529e - Time: 13803ms
+
+Warning: /home/ubuntu/work/miner/ESP-Miner-NerdQAxePlus-Ext/main/http_server/axe-os/node_modules/@nebular/eva-icons/fesm2022/nebular-eva-icons.mjs depends on 'eva-icons'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+Warning: /home/ubuntu/work/miner/ESP-Miner-NerdQAxePlus-Ext/main/http_server/axe-os/node_modules/chartjs-adapter-moment/dist/chartjs-adapter-moment.esm.js depends on 'moment'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+Warning: /home/ubuntu/work/miner/ESP-Miner-NerdQAxePlus-Ext/main/http_server/axe-os/src/app/@core/utils.ts/storage.service.ts depends on 'crypto-js'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+Warning: /home/ubuntu/work/miner/ESP-Miner-NerdQAxePlus-Ext/main/http_server/axe-os/src/app/@core/utils.ts/storage.service.ts depends on 'secure-web-storage'. CommonJS or AMD dependencies can cause optimization bailouts.
+For more info see: https://angular.dev/tools/cli/build#configuring-commonjs-dependencies
+
+Warning: /home/ubuntu/work/miner/ESP-Miner-NerdQAxePlus-Ext/main/http_server/axe-os/src/environments/environment.prod.ts is part of the TypeScript compilation but it's unused.
+Add only entry points to the 'files' or 'include' properties in your tsconfig.
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+** Angular Live Development Server is listening on 0.0.0.0:4200, open your browser on http://localhost:4200/ **
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names   | Raw size | Estimated transfer size
+runtime.js          | runtime |  2.86 kB |                 1.34 kB
+
+5 unchanged chunks
+
+Build at: 2025-12-23T18:06:09.323Z - Hash: a76cece4b617e5b4 - Time: 7778ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:06:12.121Z - Hash: a76cece4b617e5b4 - Time: 2703ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:06:23.581Z - Hash: a76cece4b617e5b4 - Time: 3331ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:06:26.217Z - Hash: a76cece4b617e5b4 - Time: 2586ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names              |  Raw size | Estimated transfer size
+runtime.js          | runtime            |   2.86 kB |                 1.34 kB
+
+Lazy chunk files    | Names              |  Raw size | Estimated transfer size
+502.js              | pages-pages-module | 209.48 kB |                40.69 kB
+
+4 unchanged chunks
+
+Build at: 2025-12-23T18:06:51.552Z - Hash: c336e229ef4c1527 - Time: 5871ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+Initial chunk files | Names              |  Raw size | Estimated transfer size
+runtime.js          | runtime            |   2.86 kB |                 1.34 kB
+
+Lazy chunk files    | Names              |  Raw size | Estimated transfer size
+502.js              | pages-pages-module | 209.78 kB |                40.62 kB
+
+4 unchanged chunks
+
+Build at: 2025-12-23T18:07:31.466Z - Hash: 8e2c1f4558b21031 - Time: 5303ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:11:10.870Z - Hash: 8e2c1f4558b21031 - Time: 3719ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:11:16.854Z - Hash: 8e2c1f4558b21031 - Time: 2907ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:11:23.420Z - Hash: 8e2c1f4558b21031 - Time: 3270ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.
+✔ Browser application bundle generation complete.
+
+
+
+6 unchanged chunks
+
+Build at: 2025-12-23T18:11:29.602Z - Hash: 8e2c1f4558b21031 - Time: 2859ms
+
+Warning: 2 rules skipped due to selector errors:
+  .form-floating >  ~ label -> Did not expect successive traversals.
+  .form-floating >  ~ label -> Did not expect successive traversals.
+
+
+
+✔ Compiled successfully.

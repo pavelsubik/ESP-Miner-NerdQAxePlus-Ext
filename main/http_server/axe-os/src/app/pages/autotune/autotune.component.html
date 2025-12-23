@@ -5,11 +5,18 @@
       <nb-card-header>
         <div class="d-flex justify-content-between align-items-center">
           <span class="text-hint">{{ 'AUTOTUNE.HEADER' | translate }}</span>
-          <nb-badge 
-            [text]="autotuneState.isRunning ? ('AUTOTUNE.STATUS_RUNNING' | translate) : ('AUTOTUNE.STATUS_IDLE' | translate)" 
-            [status]="autotuneState.isRunning ? 'success' : 'basic'"
-            size="small">
-          </nb-badge>
+          <div class="d-flex align-items-center gap-2">
+             <button nbButton [status]="isDangerZone ? 'danger' : 'basic'" size="small" (click)="toggleDangerZone()" 
+                [ngClass]="{'danger-zone-active': isDangerZone}"
+                nbTooltip="Toggle Danger Zone (Unlimited Inputs)">
+               <nb-icon icon="alert-triangle-outline"></nb-icon>
+             </button>
+             <nb-badge 
+                [text]="autotuneState.isRunning ? ('AUTOTUNE.STATUS_RUNNING' | translate) : ('AUTOTUNE.STATUS_IDLE' | translate)" 
+                [status]="autotuneState.isRunning ? 'success' : 'basic'"
+                size="small">
+             </nb-badge>
+          </div>
         </div>
       </nb-card-header>
       <nb-card-body>
@@ -19,21 +26,21 @@
             <div class="params-row">
               <div class="param-input">
                 <label>{{ 'AUTOTUNE.MAX_FREQ' | translate }}</label>
-                <input nbInput type="number" [(ngModel)]="autotuneState.maxFrequency" placeholder="800">
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxFrequency" (change)="validateInput('maxFrequency')" placeholder="800">
               </div>
               <div class="param-input">
                 <label>{{ 'AUTOTUNE.MAX_VOLT' | translate }}</label>
-                <input nbInput type="number" [(ngModel)]="autotuneState.maxVoltage" placeholder="1400">
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxVoltage" (change)="validateInput('maxVoltage')" placeholder="1400">
               </div>
             </div>
             <div class="params-row mt-2">
                <div class="param-input">
                 <label>{{ 'AUTOTUNE.MAX_POWER' | translate }}</label>
-                <input nbInput type="number" [(ngModel)]="autotuneState.maxPower" placeholder="500">
+                <input nbInput type="number" [(ngModel)]="autotuneState.maxPower" (change)="validateInput('maxPower')" placeholder="500">
               </div>
               <div class="param-input">
                 <label>{{ 'AUTOTUNE.MAX_TEMP' | translate }}</label>
-                 <input nbInput type="number" [(ngModel)]="autotuneState.maxVrTemp" placeholder="100">
+                 <input nbInput type="number" [(ngModel)]="autotuneState.maxVrTemp" (change)="validateInput('maxVrTemp')" placeholder="100">
               </div>
             </div>
             
@@ -46,17 +53,25 @@
                </button>
                <button nbButton status="warning" size="medium" outline [disabled]="autotuneState.isRunning" (click)="resetAutotune()">
                  <nb-icon icon="refresh-outline"></nb-icon>
-               </button>
-            </div>
+                </button>
+             </div>
+             
+             <!-- Emergency Reset Button -->
+             <button nbButton status="danger" size="small" class="emergency-btn" (click)="emergencyReset()" 
+                nbTooltip="Reset to Board Defaults">
+               EMERGENCY
+             </button>
           </div>
 
           <!-- Current Status -->
           <div class="col-12 col-lg-3 mb-3 mb-lg-0 border-lg-right">
              <div class="text-center">
-                <div class="param-label">{{ 'AUTOTUNE.CURRENT_STEP' | translate }}</div>
-                <div class="h5 mb-0">{{ autotuneState.currentStep }} / {{ autotuneState.totalSteps > 0 ? autotuneState.totalSteps : '?' }}</div>
-                <div class="small text-hint">
+                <div class="param-label">{{ 'AUTOTUNE.CURRENT_STEP' | translate }} {{ autotuneState.currentStep }} / {{ autotuneState.totalSteps > 0 ? autotuneState.totalSteps : '?' }}</div>
+                <div class="small text-hint mb-1">
                    {{ autotuneState.currentFrequency }} MHz / {{ autotuneState.currentVoltage }} mV
+                </div>
+                <div class="small text-success mb-0">
+                   {{ autotuneState.currentHashrate > 0 ? (autotuneState.currentHashrate | number:'1.0-0') : '--' }} GH/s / {{ autotuneState.currentEfficiency > 0 ? (autotuneState.currentEfficiency | number:'1.2-2') : '--' }} J/TH
                 </div>
              </div>
           </div>
@@ -66,22 +81,22 @@
               <!-- Best Hashrate -->
               <div class="col-6 border-right">
                 <div class="param-label text-success font-weight-bold">{{ 'AUTOTUNE.BEST_HASHRATE' | translate }}</div>
-                <div class="h5 text-success mb-0">
-                  {{ autotuneState.bestHashrate > 0 ? (autotuneState.bestHashrate | number:'1.0-0') : '--' }} <small>GH/s</small>
+                <div class="small text-hint mb-1">
+                   {{ autotuneState.bestFrequency }} MHz / {{ autotuneState.bestVoltage }} mV
                 </div>
-                <div class="small text-hint">
-                   &#64; {{ autotuneState.bestFrequency }} MHz / {{ autotuneState.bestVoltage }} mV
+                <div class="small text-success mb-0">
+                   {{ autotuneState.bestHashrate > 0 ? (autotuneState.bestHashrate | number:'1.0-0') : '--' }} GH/s / {{ autotuneState.bestHashrateEff > 0 ? (autotuneState.bestHashrateEff | number:'1.2-2') : '--' }} J/TH
                 </div>
               </div>
               
               <!-- Best Efficiency -->
               <div class="col-6">
                 <div class="param-label text-info font-weight-bold">{{ 'AUTOTUNE.BEST_EFFICIENCY' | translate }}</div>
-                <div class="h5 text-info mb-0">
-                  {{ autotuneState.bestEfficiency > 0 ? (autotuneState.bestEfficiency | number:'1.2-2') : '--' }} <small>J/TH</small>
+                <div class="small text-hint mb-1">
+                   {{ autotuneState.bestEffFrequency }} MHz / {{ autotuneState.bestEffVoltage }} mV
                 </div>
-                 <div class="small text-hint">
-                   &#64; {{ autotuneState.bestEffFrequency }} MHz / {{ autotuneState.bestEffVoltage }} mV
+                <div class="small text-info mb-0">
+                   {{ autotuneState.bestEfficiency > 0 ? (autotuneState.bestEfficiency | number:'1.2-2') : '--' }} J/TH / {{ autotuneState.bestEfficiencyHR > 0 ? (autotuneState.bestEfficiencyHR | number:'1.0-0') : '--' }} GH/s
                 </div>
               </div>
             </div>

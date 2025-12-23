@@ -12,10 +12,14 @@ interface AutotuneState {
   bestFrequency: number;
   bestVoltage: number;
   bestHashrate: number;
+  bestHashrateEff: number; // New: Efficiency at Best Hashrate
   // New fields
   bestEfficiency: number;
+  bestEfficiencyHR: number; // New: Hashrate at Best Efficiency
   bestEffFrequency: number;
   bestEffVoltage: number;
+  currentHashrate: number; // New
+  currentEfficiency: number; // New
   maxFrequency: number;
   maxVoltage: number;
   maxPower: number;
@@ -38,6 +42,10 @@ interface AutotuneDataPoint {
 })
 export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('autotuneChart') chartCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('logContainer') logContainer!: ElementRef<HTMLDivElement>;
+  
+  // Danger Zone
+  isDangerZone = false;
 
   private chart: Chart | null = null;
   private dataSubscription: Subscription | null = null;
@@ -70,9 +78,13 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
     bestFrequency: 0,
     bestVoltage: 0,
     bestHashrate: 0,
+    bestHashrateEff: 0,
     bestEfficiency: 0,
+    bestEfficiencyHR: 0,
     bestEffFrequency: 0,
     bestEffVoltage: 0,
+    currentHashrate: 0,
+    currentEfficiency: 0,
     maxFrequency: 800,
     maxVoltage: 1400,
     maxPower: 500,
@@ -82,6 +94,10 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
   // System defaults
   private defaultMaxPower = 500;
   private defaultMaxTemp = 100;
+  
+  // Board defaults (from AsicInfo)
+  private boardDefaultFrequency = 800;
+  private boardDefaultVoltage = 1400;
 
   // Log content (persisted)
   logLines: string[] = [];
@@ -100,6 +116,9 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Load system defaults
     this.loadSystemDefaults();
+    
+    // Load board defaults
+    this.loadBoardDefaults();
   }
 
   private loadSystemDefaults(): void {
@@ -119,6 +138,21 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
            this.autotuneState.maxPower = this.defaultMaxPower;
            this.autotuneState.maxVrTemp = this.defaultMaxTemp;
         }
+      }
+    });
+  }
+  
+  private loadBoardDefaults(): void {
+    this.systemService.getAsicInfo().pipe(
+      take(1),
+      catchError(err => {
+        console.warn('Failed to load board defaults', err);
+        return of(null);
+      })
+    ).subscribe(asicInfo => {
+      if (asicInfo) {
+        if (asicInfo.defaultFrequency) this.boardDefaultFrequency = asicInfo.defaultFrequency;
+        if (asicInfo.defaultVoltage) this.boardDefaultVoltage = asicInfo.defaultVoltage;
       }
     });
   }
@@ -238,6 +272,15 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
         // Always update current freq/volt from system info
         this.autotuneState.currentFrequency = info.frequency || 0;
         this.autotuneState.currentVoltage = info.coreVoltage || 0;
+        this.autotuneState.currentHashrate = info.hashRate || 0;
+        
+        // Calculate current efficiency (J/TH = W / (GH/s / 1000))
+        // or W / TH/s
+        if (info.hashRate > 0) {
+            this.autotuneState.currentEfficiency = info.power / (info.hashRate / 1000.0);
+        } else {
+            this.autotuneState.currentEfficiency = 0;
+        }
 
         // Add data point for chart
         const timestamp = Date.now();
@@ -319,24 +362,32 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
     // Note: currentFrequency/currentVoltage come from system info, not autotune status
 
     this.autotuneState.bestHashrate = status.bestHashrate;
+    this.autotuneState.bestHashrateEff = status.bestHashrateEff || 0;
     this.autotuneState.bestFrequency = status.bestFrequency;
     this.autotuneState.bestVoltage = status.bestVoltage;
     
     this.autotuneState.bestEfficiency = status.bestEfficiency;
+    this.autotuneState.bestEfficiencyHR = status.bestEfficiencyHR || 0;
     this.autotuneState.bestEffFrequency = status.bestEffFrequency;
     this.autotuneState.bestEffVoltage = status.bestEffVoltage;
     
     // Logs - append backend logs if available
     if (status.logs && Array.isArray(status.logs) && status.logs.length > 0) {
+      let newLogsAdded = false;
       // Merge backend logs with local logs, avoiding duplicates
       for (const log of status.logs) {
         if (!this.logLines.includes(log)) {
           this.logLines.push(log);
+          newLogsAdded = true;
         }
       }
       // Keep max 100 lines
       while (this.logLines.length > 100) {
         this.logLines.shift();
+      }
+      
+      if (newLogsAdded) {
+        this.scrollToBottom();
       }
     }
   }
@@ -396,7 +447,7 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
           {
             label: 'VR Temp (°C)',
             data: this.chartVrTemp,
-            borderColor: '#ffaa00',
+            borderColor: '#D500F9',
             backgroundColor: 'transparent',
             yAxisID: 'y-temp',
             tension: 0.3,
@@ -595,9 +646,13 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
       bestFrequency: 0,
       bestVoltage: 0,
       bestHashrate: 0,
+      bestHashrateEff: 0,
       bestEfficiency: 0,
+      bestEfficiencyHR: 0,
       bestEffFrequency: 0,
       bestEffVoltage: 0,
+      currentHashrate: 0,
+      currentEfficiency: 0,
       maxFrequency: 800,
       maxVoltage: 1400,
       maxPower: this.defaultMaxPower,
@@ -635,6 +690,19 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.logLines.length > 100) {
       this.logLines.shift();
     }
+    
+    this.scrollToBottom();
+  }
+  
+  private scrollToBottom(): void {
+    if (!this.logContainer) return;
+    
+    // Tiny delay to allow DOM to update before scrolling
+    setTimeout(() => {
+        try {
+            this.logContainer.nativeElement.scrollTop = this.logContainer.nativeElement.scrollHeight;
+        } catch (err) { }
+    }, 50);
   }
 
   getLogClass(line: string): string {
@@ -642,5 +710,61 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
     if (line.includes('[WARN]')) return 'log-warning';
     if (line.includes('[SUCCESS]')) return 'log-success';
     return 'log-info';
+  }
+
+  toggleDangerZone(): void {
+    this.isDangerZone = !this.isDangerZone;
+    if (this.isDangerZone) {
+      this.addLogLine('[WARN] Danger Zone ENABLED - Input limits removed');
+    } else {
+      this.addLogLine('[INFO] Danger Zone DISABLED - Safe limits enforced');
+      // Re-validate all current inputs immediately
+      this.validateInput('maxFrequency');
+      this.validateInput('maxVoltage');
+      this.validateInput('maxPower');
+      this.validateInput('maxVrTemp');
+    }
+  }
+
+  emergencyReset(): void {
+    this.autotuneState.maxFrequency = this.boardDefaultFrequency;
+    this.autotuneState.maxVoltage = this.boardDefaultVoltage;
+    this.autotuneState.maxPower = this.defaultMaxPower;
+    this.autotuneState.maxVrTemp = this.defaultMaxTemp;
+    
+    this.addLogLine(`[INFO] Emergency Reset: Set to board defaults (${this.boardDefaultFrequency} MHz, ${this.boardDefaultVoltage} mV)`);
+    this.savePersistedData();
+  }
+
+  validateInput(field: 'maxFrequency' | 'maxVoltage' | 'maxPower' | 'maxVrTemp'): void {
+    if (this.isDangerZone) return;
+
+    let limit = 0;
+    let value = this.autotuneState[field];
+    let clamped = false;
+
+    switch (field) {
+      case 'maxFrequency':
+        limit = 800; // Safe limit
+        break;
+      case 'maxVoltage':
+        limit = 1400; // Safe limit
+        break;
+      case 'maxPower':
+        limit = this.defaultMaxPower;
+        break;
+      case 'maxVrTemp':
+        limit = this.defaultMaxTemp;
+        break;
+    }
+
+    if (value > limit) {
+      this.autotuneState[field] = limit;
+      clamped = true;
+    }
+
+    if (clamped) {
+      this.addLogLine(`[WARN] ${field} limited to ${limit} (Safe Mode)`);
+    }
   }
 }

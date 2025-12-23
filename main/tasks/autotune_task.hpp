@@ -77,6 +77,9 @@ private:
     // Strategy helpers
     bool applySettings(uint16_t freq, uint16_t volt);
     bool checkLimits(); // Returns true if OK, false if limit exceeded
+    AutotuneResult testCandidate(uint16_t freq, uint16_t volt, bool strict_mode = false);
+    AutotuneResult optimizeVoltageForFrequency(uint16_t freq, uint16_t v_center, uint16_t v_step);
+    bool confirmCandidate(const AutotuneResult& candidate);
 
     TaskHandle_t m_taskHandle = nullptr;
     std::atomic<AutotuneState> m_state{AutotuneState::IDLE};
@@ -93,10 +96,15 @@ private:
     uint16_t m_current_freq = 0;
     uint16_t m_current_volt = 0;
     uint16_t m_start_volt = 1150;
+    uint16_t m_carry_volt = 1150; // Voltage to carry forward to next frequency
     
     int m_val_sweep_step = 0; // -2 to +2
     int m_step_counter = 0;
     int m_total_estimated_steps = 0;
+    int m_bad_streak = 0; // Counter for early stopping
+    
+    // Cached test results for current run
+    std::vector<AutotuneResult> m_all_results;
     
     std::vector<std::string> m_log_buffer;
     mutable std::mutex m_log_mutex;
@@ -106,4 +114,8 @@ private:
     static constexpr uint32_t SETTLE_TIME_MS = 30000; // 30s (reduced from 90s for testing)
     static constexpr uint32_t MEASURE_TIME_MS = 30000; // 30s (reduced from 60s)
     static constexpr uint32_t POLLING_INTERVAL_MS = 2000; // Check sensors every 2s
+    
+    // Strategy constants
+    static constexpr int BAD_STREAK_STOP = 2; // Stop after N consecutive bad frequencies
+    static constexpr float DROP_STOP_THRESHOLD = 50.0f; // GH/s drop to consider "bad"
 };

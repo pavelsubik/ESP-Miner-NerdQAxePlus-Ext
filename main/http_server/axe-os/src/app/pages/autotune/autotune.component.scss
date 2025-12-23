@@ -52,6 +52,22 @@
   .border-lg-right {
     border-right: 1px solid rgba(255, 255, 255, 0.4);
   }
+  
+  .text-center {
+    .param-label {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    .h5 {
+        line-height: 1.2;
+    }
+    .h6 {
+        line-height: 1.2;
+    }
+    .small {
+        line-height: normal;
+    }
+  }
 }
 
 // Chart section - Fixed height in the middle
@@ -198,4 +214,24 @@
 // Card body scroll fix
 nb-card-body.no-scroll {
   overflow: hidden;
+}
+
+@keyframes pulse-danger {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 61, 113, 0.7); }
+  70% { transform: scale(1.05); box-shadow: 0 0 0 6px rgba(255, 61, 113, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 61, 113, 0); }
+}
+
+button.status-danger.danger-zone-active {
+  animation: pulse-danger 2s infinite;
+}
+
+.emergency-btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  min-width: 120px;
 }
