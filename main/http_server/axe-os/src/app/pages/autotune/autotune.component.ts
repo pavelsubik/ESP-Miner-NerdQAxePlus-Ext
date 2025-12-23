@@ -133,9 +133,12 @@ export class AutotuneComponent implements OnInit, OnDestroy, AfterViewInit {
         if (info.maxPower) this.defaultMaxPower = info.maxPower;
         if (info.overheat_temp) this.defaultMaxTemp = info.overheat_temp;
         
-        // If state has legacy defaults (500/100), update them to system defaults
-        if (this.autotuneState.maxPower === 500 && this.autotuneState.maxVrTemp === 100) {
+        // Only update to system defaults if values are EXACTLY the legacy defaults
+        // Check each value independently to preserve user's custom values
+        if (this.autotuneState.maxPower === 500) {
            this.autotuneState.maxPower = this.defaultMaxPower;
+        }
+        if (this.autotuneState.maxVrTemp === 100) {
            this.autotuneState.maxVrTemp = this.defaultMaxTemp;
         }
       }

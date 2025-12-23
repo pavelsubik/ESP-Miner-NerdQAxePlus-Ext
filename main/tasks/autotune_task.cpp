@@ -36,6 +36,12 @@ bool AutotuneTask::start(const AutotuneConfig& config) {
         m_log_buffer.clear();
     }
     
+    // Reset best results
+    m_best_hashrate = {};
+    m_best_hashrate.valid = false;
+    m_best_efficiency = {};
+    m_best_efficiency.valid = false;
+    
     // Create FreeRTOS task
     BaseType_t res = xTaskCreate(
         taskFunction,
@@ -97,11 +103,11 @@ void AutotuneTask::run() {
         m_config.max_voltage = boardMaxVolt;
 
     uint16_t boardMaxPower = (uint16_t)board->getMaxPin();
-    if (m_config.max_power == 0 || m_config.max_power > boardMaxPower) 
+    if (m_config.max_power == 0) 
         m_config.max_power = boardMaxPower;
 
     uint16_t userMaxTemp = Config::getOverheatTemp();
-    if (m_config.max_temp == 0 || m_config.max_temp > userMaxTemp) 
+    if (m_config.max_temp == 0) 
         m_config.max_temp = userMaxTemp;
 
     log("Autotune started. Max Freq: %d MHz, Max Volt: %d mV, Max Power: %d W, Max Temp: %d C", 
